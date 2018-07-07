@@ -11,8 +11,17 @@ services:
       NODE_ENV: development
       LOG_LEVEL: info
       PORT: 8080
+      POSTGRES_CONNECTION_URL: postgres://grocery:grocery@postgres:5432/grocery
     volumes:
       - ./:/home/node/app
+    links:
+      - postgres
     command: "npm start"
+  postgres:
+    image: postgres:10.4
+    restart: always
+    environment:
+      POSTGRES_USER: grocery
+      POSTGRES_PASSWORD: grocery
 
 
