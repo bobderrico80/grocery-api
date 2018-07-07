@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const Sequelize = require('sequelize');
 const packageJson = require('./package.json');
 const logger = require('./lib/logger');
@@ -11,6 +12,7 @@ const sequelize = new Sequelize(process.env.POSTGRES_CONNECTION_URL, {
   operatorsAliases: false,
 });
 
+app.use(morgan('combined', { stream: logger.stream }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
