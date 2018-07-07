@@ -1,5 +1,6 @@
 const express = require('express');
 const packageJson = require('./package.json');
+const logger = require('./lib/logger');
 
 const port = process.env.PORT || 8080;
 
@@ -21,4 +22,4 @@ router.get('/version', (req, res) => {
 app.use('/', router);
 
 app.listen(port);
-console.log(`Listening on port ${port}`);
+logger.info(`Listening on port ${port}`);
