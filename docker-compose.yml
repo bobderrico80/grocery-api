@@ -1,0 +1,18 @@
+version: "2"
+services:
+  app:
+    image: node:10.6.0
+    user: node
+    working_dir: /home/node/app
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: info
+      PORT: 8080
+    volumes:
+      - ./:/home/node/app
+    command: "npm start"
+
+
