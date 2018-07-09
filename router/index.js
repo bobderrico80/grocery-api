@@ -2,9 +2,11 @@ const express = require('express');
 const requireDir = require('require-dir');
 const packageJson = require('../package.json');
 const { sequelize } = require('../lib/db');
+const logger = require('../lib/logger');
 
 const router = express.Router();
 
+logger.info('Initializing healthcheck route');
 router.get('/healthcheck', async (req, res) => {
   try {
     await sequelize.authenticate();
@@ -14,6 +16,7 @@ router.get('/healthcheck', async (req, res) => {
   }
 });
 
+logger.info('Initializing version route');
 router.get('/version', (req, res) => {
   res.status(200).send({ version: packageJson.version });
 });
@@ -21,6 +24,7 @@ router.get('/version', (req, res) => {
 const routers = requireDir();
 
 Object.entries(routers).forEach(([name, routerFunction]) => {
+  logger.info(`initializing ${name} routes`);
   router.use(`/${name}`, routerFunction);
 });
 

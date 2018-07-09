@@ -17,6 +17,7 @@ app.use('/', router);
 
 // Bootstrap application
 (async () => {
+  logger.info('Syncronizing database with models');
   await sequelize.sync({ logging: logger.debug });
   app.listen(port);
   logger.info(`Listening on port ${port}`);
