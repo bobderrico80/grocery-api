@@ -1,6 +1,12 @@
 const bcrypt = require('bcrypt');
 const { Sequelize, sequelize } = require('../lib/db');
 
+const hashPassword = async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 12);
+  // eslint-disable-next-line no-param-reassign
+  user.password = hashedPassword;
+};
+
 const User = sequelize.define(
   'user',
   {
@@ -15,10 +21,12 @@ const User = sequelize.define(
   },
   {
     hooks: {
-      beforeCreate: async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, 12);
-        // eslint-disable-next-line no-param-reassign
-        user.password = hashedPassword;
+      beforeCreate: hashPassword,
+      beforeUpdate: async (user) => {
+        // Update the password if it has changed
+        if (user.previous('password') !== user.password) {
+          await hashPassword(user);
+        }
       },
     },
   },
