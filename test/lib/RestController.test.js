@@ -2,8 +2,8 @@ const chai = require('chai');
 const Sequelize = require('sequelize');
 const { stub, spy } = require('sinon');
 const sinonChai = require('sinon-chai');
-const logger = require('../lib/logger');
-const RestController = require('../lib/RestController');
+const logger = require('../../lib/logger');
+const RestController = require('../../lib/RestController');
 
 chai.use(sinonChai);
 const { expect } = chai;
