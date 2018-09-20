@@ -2,6 +2,7 @@
   "name": "grocery-api",
   "version": "1.0.0",
   "description": "REST API for grocery list app",
+  "repository": "https://github.com/bobderrico80/grocery-api",
   "main": "app.js",
   "scripts": {
     "test": "mocha --recursive test",
@@ -10,6 +11,7 @@
   "author": "bobderrico80@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "express": "4.16.3",
     "morgan": "1.9.0",
     "pg": "7.4.3",
