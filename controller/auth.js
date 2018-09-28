@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
+const { createJwt } = require('../lib/auth');
 const NotAuthorizedError = require('../lib/NotAuthorizedError');
 const RestRequest = require('../lib/RestRequest');
 const User = require('../model/User');
 
-// TODO Move these to configuration management
 const jwtSecret = process.env.JWT_SECRET;
-const expiresIn = 5 * 60; // 5 minutes from now
+const issuer = process.env.JWT_ISSUER;
+const audience = process.env.JWT_AUDIENCE;
 
 /**
  * Controller for handling logins and authenticating a user. Successful login requests will
@@ -19,8 +19,8 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!jwtSecret) {
-      throw new Error('No JWT secret is configured');
+    if (!jwtSecret || !issuer || !audience) {
+      throw new Error('JWT_SECRET, JWT_ISSUER, and JWT_AUDIENCE are not configured!');
     }
 
     const user = await User.findOne({ where: { email } });
@@ -35,7 +35,7 @@ const login = async (req, res) => {
       throw new NotAuthorizedError();
     }
 
-    const token = jwt.sign({ email }, jwtSecret, { expiresIn });
+    const token = createJwt(user);
     request.withData({ token });
   } catch (error) {
     request.withError(error);
