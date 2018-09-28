@@ -23,9 +23,9 @@ router.get('/version', (req, res) => {
 
 const routers = requireDir();
 
-Object.entries(routers).forEach(([name, routerFunction]) => {
+Object.entries(routers).forEach(([name, { router: routerFunction, middleware = [] }]) => {
   logger.info(`initializing ${name} routes`);
-  router.use(`/${name}`, routerFunction);
+  router.use(`/${name}`, ...middleware, routerFunction);
 });
 
 module.exports = router;
